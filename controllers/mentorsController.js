@@ -11,4 +11,18 @@ async function getMentorsByAmount(req, res, next) {
     next()
 }
 
-module.exports = {getMentorsByAmount}
+async function getAllMentors(req, res, next) {
+    try {
+        const mentors = Mentor.find({})
+        res.status(200).json(mentors)
+    } catch (err) {
+        res.status(500).send("Couldn't get all of the mentors.")
+    }
+    next()
+}
+
+// async function addMentor
+
+// async function updateMentor
+
+module.exports = {getMentorsByAmount, getAllMentors}
