@@ -11,6 +11,9 @@ app.use(express.json())
 // Serve static assets folder on to access images and icons
 // Documents in the database should only have the image names because otherwise they would mess up the path, 
 // the path expects to serve the static assets folder on /mentors, /assets itself is not a route
+app.get('/', (req, res, next) => {
+    res.status(200).send("Backend is running.")
+})
 app.use('/mentors', express.static('assets/profile-imgs')) 
 app.use('/mentors', mentorsRouter)
 
