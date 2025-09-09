@@ -8,7 +8,7 @@ async function getMentorsByAmount(req, res, next) {
         const mentorsData = requestedAmount.map(mentor => ({
             _id: mentor._id,
             id: mentor.id,
-            image: `http://localhost:5000/mentors/${mentor.image}`,
+            image: `https://skillmentor-back-production.up.railway.app/mentors/${mentor.image}`,
             name: mentor.name,
             position: mentor.position,
             charge: mentor.charge,
@@ -29,7 +29,7 @@ async function getAllMentors(req, res, next) {
         const mentorsData = mentors.map(mentor => ({
             _id: mentor._id,
             id: mentor.id,
-            image: `http://localhost:5000/mentors/${mentor.image}`,
+            image: `https://skillmentor-back-production.up.railway.app/mentors/${mentor.image}`,
             name: mentor.name,
             position: mentor.position,
             charge: mentor.charge,
@@ -54,7 +54,7 @@ async function getMentorById(req, res, next) {
             id: match.id,
             // Access the static image, if we don't specify the route like this, the frontend won't be able to access the image
             // Unless we store it there as well and if we store it there as well, the purpose of the backend will be defeated.
-            image: `http://localhost:5000/mentors/${match.image}`, 
+            image: `https://skillmentor-back-production.up.railway.app/mentors/${match.image}`, 
             name: match.name,
             position: match.position,
             charge: match.charge,

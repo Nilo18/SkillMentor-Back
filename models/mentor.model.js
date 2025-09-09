@@ -1,5 +1,22 @@
 const mongoose = require('mongoose')
 
+const experienceSchema = mongoose.Schema({
+    company: { 
+        type: String,
+        required: true
+    },
+
+    position: {
+        type: String,
+        required: true
+    },
+
+    description: {
+        type: String,
+        required: true
+    },
+})
+
 const mentorSchema = mongoose.Schema({
     id: {
         type: String,
@@ -26,24 +43,7 @@ const mentorSchema = mongoose.Schema({
         required: true
     },
 
-    experiences: [
-        {
-            company: { 
-                type: String,
-                required: true
-            },
-
-            position: {
-                type: String,
-                required: true
-            },
-
-            description: {
-                type: String,
-                required: true
-            },
-        }
-    ]
+    experiences: [experienceSchema]
 })
 
 const Mentor = mongoose.model('mentor', mentorSchema)
