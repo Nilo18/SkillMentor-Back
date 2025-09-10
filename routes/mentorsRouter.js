@@ -3,7 +3,8 @@ const mentorsRouter = express.Router()
 const { getMentorsByAmount, getAllMentors, getMentorById } = require('../controllers/mentorsController.js')
 
 // For getting a specific amount of mentors
-mentorsRouter.get('/amount', getMentorsByAmount)
+// Switched to POST because GET can't receive a body
+mentorsRouter.post('/amount', getMentorsByAmount)
 
 // For getting every mentor
 mentorsRouter.get('/', getAllMentors)
