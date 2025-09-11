@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const slideSchema = mongoose.Schema({
-    img: {
+    image: {
         type: String,
         required: true
     },
