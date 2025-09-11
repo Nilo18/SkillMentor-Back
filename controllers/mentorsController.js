@@ -26,6 +26,7 @@ async function getAllMentors(req, res, next) {
     try {
         const mentors = await Mentor.find({})
         // Make a copy of the received array to avoid sending multiple requests by looping over it and then sending each
+        // We do it like this to make request and send the profile images properly
         const mentorsData = mentors.map(mentor => ({
             _id: mentor._id,
             id: mentor.id,
@@ -37,7 +38,7 @@ async function getAllMentors(req, res, next) {
         }));
         res.status(200).json(mentorsData)
     } catch (err) {
-        return res.status(500).send("Couldn't get all of the mentors.")
+        return res.status(500).send("Couldn't get all of the mentors: ", err)
     }
     next()
 }
@@ -62,7 +63,7 @@ async function getMentorById(req, res, next) {
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).send("Couldn't get mentor by id.")
+        return res.status(500).send("Couldn't get mentor by id: ", err)
     }
     next()
 }

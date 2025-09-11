@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
 const mentorsRouter = require('./routes/mentorsRouter.js')
+const sliderRoute =  require('./routes/sliderRoute.js')
 
 app.use(cors({origin: 'http://localhost:4200'}))
 app.use(express.json())
@@ -14,6 +15,8 @@ app.use(express.json())
 app.get('/', (req, res, next) => {
     res.status(200).send("Backend is running.")
 })
+app.use('/slider', express.static('assets/slides'))
+app.use('/slider', sliderRoute)
 app.use('/mentors', express.static('assets/profile-imgs')) 
 app.use('/mentors', mentorsRouter)
 
