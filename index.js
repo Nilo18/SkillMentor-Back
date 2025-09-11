@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 5000
+const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
@@ -15,7 +16,10 @@ app.use(express.json())
 app.get('/', (req, res, next) => {
     res.status(200).send("Backend is running.")
 })
-app.use('/slider', express.static('assets/slides'))
+app.use('/slider', express.static(path.join(__dirname, 'assets/slides'), {
+    maxAge: '7d',
+    immutable: true // Browser can safely cache forever if unchanged
+}))
 app.use('/slider', sliderRoute)
 app.use('/mentors', express.static('assets/profile-imgs')) 
 app.use('/mentors', mentorsRouter)
