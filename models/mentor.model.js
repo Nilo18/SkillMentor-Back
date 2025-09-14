@@ -50,9 +50,13 @@ const mentorSchema = mongoose.Schema({
 
     charge: {
         type: String,
+        required: true
     },
 
-    experiences: [experienceSchema]
+    experiences: { 
+       type: [experienceSchema],
+       required: true
+    }
 })
 
 const Mentor = mongoose.model('mentor', mentorSchema)

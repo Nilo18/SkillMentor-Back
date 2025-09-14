@@ -4,11 +4,13 @@ const port = process.env.PORT || 5000
 const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
-require('dotenv').config()
+require('dotenv').config() // Read .env values
 const mentorsRouter = require('./routes/mentorsRouter.js')
 const sliderRoute =  require('./routes/sliderRoute.js')
+const signupRouter = require('./routes/signupRouter.js')
 
 app.use(cors({origin: 'http://localhost:4200'}))
+app.use('/signup', signupRouter)
 app.use(express.json())
 // Serve static assets folder on to access images and icons
 // Documents in the database should only have the image names because otherwise they would mess up the path, 
