@@ -1,5 +1,5 @@
 const Mentor = require('../models/mentor.model.js')
-const baseURL = 'https://skillmentor-back-production.up.railway.app'
+const baseURL = 'https://skillmentor-back.onrender.com'
 
 async function getMentorsByAmount(req, res, next) {
     try {
