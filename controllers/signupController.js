@@ -4,6 +4,8 @@ const createVerToken = require('../middleware/verTokenCreator.js')
 const { sendEmailToVerify } = require('../middleware/mailSender.js')
 
 async function sendEmailVerification(toEmail, verToken) {
+    console.log('The received verToken is: ', verToken)
+    console.log('The received token inside verToken object is: ', verToken.token)
     const verificationLink = `${process.env.BASE_URL}/verify-email/${verToken.token}`
     const htmlMsg = `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
     await sendEmailToVerify(toEmail, 'შეამოწმეთ ელ–ფოსტა', htmlMsg, 'gmail')
@@ -26,9 +28,11 @@ async function signupUser(req, res, next) {
         // const experiences = [] // Set the experiences as empty initially
 
         const id = Date.now().toString()
-        console.log('Generated id: ', id)
+        // console.log('Generated id: ', id)
 
-        const verToken = createVerToken(id, name, profileImage, email, hashedPassword, position)
+        const verToken = await createVerToken(id, name, profileImage, email, hashedPassword, position)
+        console.log('Generated verToken is: ', verToken)
+        console.log('Generated token inside verToken is: ', verToken.token)
         await sendEmailVerification(email, verToken)
 
         // const newUser = await Mentor.create({
