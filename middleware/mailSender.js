@@ -19,12 +19,13 @@ async function sendEmailToVerify(toEmail, subject, html, service) {
         const options = {
             from: process.env.EMAIL_USER,
             to: toEmail,
-            Subject: subject,
+            subject: subject,
             html: html
         }
         console.log('The options are: ', options)
 
-        await transport.sendMail(options)
+        const info = await transport.sendMail(options);
+        console.log('Email sent: ', info.messageId);
     } catch (err) {
         return console.log("Couldn't send verification message: ", err)
     }
