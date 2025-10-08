@@ -9,6 +9,7 @@ const mentorsRouter = require('./routes/mentorsRouter.js')
 const sliderRoute =  require('./routes/sliderRoute.js')
 const signupRouter = require('./routes/signupRouter.js')
 const verRouter = require('./routes/verRouter.js')
+const pingRouter = require('./routes/pingRouter.js')
 
 app.use(cors({origin: 'http://localhost:4200'}))
 app.use('/signup', signupRouter)
@@ -24,6 +25,7 @@ app.use('/slider', express.static(path.join(__dirname, 'assets/slides'), {
     immutable: true // Browser can safely cache forever if unchanged
 }))
 app.use('/slider', sliderRoute)
+app.use('/ping', pingRouter)
 app.use('verify-email', verRouter)
 app.use('/mentors', express.static('assets/profile-imgs')) 
 app.use('/mentors', mentorsRouter)
