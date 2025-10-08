@@ -22,7 +22,7 @@ async function sendEmailToVerify(toEmail, subject, html, service) {
             Subject: subject,
             html: html
         }
-        // console.log('The options are: ', options)
+        console.log('The options are: ', options)
 
         await transport.sendMail(options)
     } catch (err) {
