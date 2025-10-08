@@ -11,6 +11,10 @@ const signupRouter = require('./routes/signupRouter.js')
 const verRouter = require('./routes/verRouter.js')
 const pingRouter = require('./routes/pingRouter.js')
 
+console.log('MONGO_URI', process.env.MONGO_URI)
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '****' : 'missing');
+
 app.use(cors({origin: 'http://localhost:4200'}))
 app.use('/signup', signupRouter)
 app.use(express.json())
