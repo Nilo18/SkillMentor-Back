@@ -5,7 +5,7 @@ const Mentor = require('../models/mentor.model.js')
 async function verifyEmail(req, res, next) {
     try {
         const givenVerToken = req.params.token
-        const storedVerToken = await verToken.find({token: givenVerToken})
+        const storedVerToken = await verToken.findOne({token: givenVerToken})
 
         if (!storedVerToken) {
             return res.status(401).json({message: 'Invalid verification token.'})
@@ -32,15 +32,17 @@ async function verifyEmail(req, res, next) {
             charge: charge,
             experiences: experiences
         })
+        console.log('The new mentor is: ', newMentor)
 
         // After that JWT token should be created and sent back (Separate function is needed for this)
-        const token = createJWT(
+        const accessToken = createJWT(
             storedVerToken.image, storedVerToken.name, storedVerToken.email, storedVerToken.password, storedVerToken.position
         )
 
-        return res.status(200).json({token})
+        return res.status(200).json({accessToken})
     } catch (err) {
-        return res.status(500).json("Server error: couldn't verify email.")
+        // console.log(err)
+        return res.status(500).json("Couldn't verify email: " + err)
     }
 }
 
