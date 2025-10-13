@@ -11,9 +11,9 @@ const signupRouter = require('./routes/signupRouter.js')
 const verRouter = require('./routes/verRouter.js')
 const pingRouter = require('./routes/pingRouter.js')
 
-console.log('MONGO_URI', process.env.MONGO_URI)
-console.log('EMAIL_USER:', process.env.EMAIL_USER);
-console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '****' : 'missing');
+// console.log('MONGO_URI', process.env.MONGO_URI)
+// console.log('EMAIL_USER:', process.env.EMAIL_USER);
+// console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '****' : 'missing');
 
 app.use(cors({origin: 'http://localhost:4200'}))
 app.use('/signup', signupRouter)
@@ -30,7 +30,7 @@ app.use('/slider', express.static(path.join(__dirname, 'assets/slides'), {
 }))
 app.use('/slider', sliderRoute)
 app.use('/ping', pingRouter)
-app.use('verify-email', verRouter)
+app.use('/verify-email', verRouter)
 app.use('/mentors', express.static('assets/profile-imgs')) 
 app.use('/mentors', mentorsRouter)
 

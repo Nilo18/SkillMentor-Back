@@ -1,4 +1,10 @@
 const nodemailer = require('nodemailer')
+const { Resend } = require('resend')
+const resend = new Resend(process.env.RESEND_API_KEY)
+const fs = require('fs')
+const { google } = require('googleapis')
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 function createTransport(service) {
     return  nodemailer.createTransport({
@@ -13,7 +19,7 @@ function createTransport(service) {
     });
 }
 
-createTransport('gmail')
+// createTransport('gmail')
 
 async function sendEmailToVerify(toEmail, subject, html, service) {
     try {
