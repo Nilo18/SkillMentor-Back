@@ -1,24 +1,24 @@
-const multer = require('multer')
-const path = require('path')
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary'); 
+const cloudinary = require('cloudinary').v2; // ✅ proper import
+// require('dotenv').config();
 
-const storage = multer.diskStorage({
-    // cb is a callback that will tell multer what to do next
-    destination: (req, file, cb) => {
-        // null as the first argument means no error, we could also pass Error as the first argument and null as the second
-        // This will mean that there's an error
-        cb(null, 'assets/profile-imgs')
-    },
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-    filename: (req, file, cb) => {
-        const extension = path.extname(file.originalname);
-
-        console.log('Date.now() is: ', Date.now())
-        console.log('The result of username + now() + extension: ', 'mentor' + Date.now() + extension)
-
-        // Chain username, date and extension to create a unique file name
-        const cbReturn = cb(null, 'mentor' + Date.now() + extension)
-    }
-})
+// Use Cloudinary storage instead of local disk
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'mentors',                // your folder name in Cloudinary
+    allowed_formats: ['jpg', 'png'],  // optional
+    public_id: (req, file) => 'mentor' + Date.now(),  // same naming logic you used before
+  },
+});
 
 // Create the storage instance 
 // upload now knows where to put the files and how to name them

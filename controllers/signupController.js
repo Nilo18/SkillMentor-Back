@@ -15,7 +15,7 @@ async function signupUser(req, res, next) {
     try {
         const { name, email, position, password } = req.body
         // console.log(name)
-        const profileImage = req.file ? req.file.filename : null // Retrieve the image name so we can save it into the db
+        const profileImage = req.file ? req.file.path : null // Retrieve the image name so we can save it into the db
         const mentorWithSameEmail = await Mentor.findOne({email})
 
         if (mentorWithSameEmail) {

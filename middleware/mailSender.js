@@ -24,7 +24,7 @@ function createTransport(service) {
 async function sendEmailToVerify(toEmail, subject, html, service) {
     try {
         const transport = createTransport(service)
-        console.log("The transport is: ", transport)
+        // console.log("The transport is: ", transport)
 
         // html link is receiving undefined in the end, fix that as well
         const options = {
@@ -33,7 +33,7 @@ async function sendEmailToVerify(toEmail, subject, html, service) {
             subject: subject,
             html: html
         }
-        console.log('The options are: ', options)
+        // console.log('The options are: ', options)
 
         const info = await transport.sendMail(options);
         console.log('Email sent: ', info.messageId);
