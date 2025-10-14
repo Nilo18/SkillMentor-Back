@@ -1,6 +1,14 @@
 const Mentor = require('../models/mentor.model.js')
 const baseURL = 'https://seefuture-back-a044db68f5d8.herokuapp.com'
 
+// This function will check if the image is being served statically or dynamically
+// It is used to avoid URL conflicts on image property
+function getMentorImage(image) {
+  if (!image) return '/mentors/default.jpg'; // fallback image
+  if (image.startsWith('http')) return image; // Cloudinary full URL
+  return `${process.env.BACKEND_URL}/mentors/${image}`; // static file
+};
+
 async function getMentorsByAmount(req, res, next) {
     try {
         const { amount } = req.body
@@ -9,7 +17,7 @@ async function getMentorsByAmount(req, res, next) {
         const mentorsData = requestedAmount.map(mentor => ({
             _id: mentor._id,
             id: mentor.id,
-            image: `${process.env.BACKEND_URL}/mentors/${mentor.image}`,
+            image: getMentorImage(mentor.image),
             name: mentor.name,
             position: mentor.position,
             charge: mentor.charge,
@@ -31,7 +39,7 @@ async function getAllMentors(req, res, next) {
         const mentorsData = mentors.map(mentor => ({
             _id: mentor._id,
             id: mentor.id,
-            image: `${process.env.BACKEND_URL}/mentors/${mentor.image}`,
+            image: getMentorImage(mentor.image),
             name: mentor.name,
             position: mentor.position,
             charge: mentor.charge,
@@ -56,7 +64,7 @@ async function getMentorById(req, res, next) {
             id: match.id,
             // Access the static image, if we don't specify the route like this, the frontend won't be able to access the image
             // Unless we store it there as well and if we store it there as well, the purpose of the backend will be defeated.
-            image: `${process.env.BACKEND_URL}/mentors/${match.image}`, 
+            image: getMentorImage(mentor.image), 
             name: match.name,
             position: match.position,
             charge: match.charge,
