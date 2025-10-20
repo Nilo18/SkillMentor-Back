@@ -64,7 +64,7 @@ async function getMentorById(req, res, next) {
             id: match.id,
             // Access the static image, if we don't specify the route like this, the frontend won't be able to access the image
             // Unless we store it there as well and if we store it there as well, the purpose of the backend will be defeated.
-            image: getMentorImage(mentor.image), 
+            image: getMentorImage(match.image), 
             name: match.name,
             position: match.position,
             charge: match.charge,
