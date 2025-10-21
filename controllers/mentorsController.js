@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const Mentor = require('../models/mentor.model.js')
 const baseURL = 'https://seefuture-back-a044db68f5d8.herokuapp.com'
 
@@ -55,9 +56,9 @@ async function getAllMentors(req, res, next) {
 async function getMentorById(req, res, next) {
     try {
         const givenId = req.params.id
-        const match = await Mentor.findOne({
-            $or: [{ _id: givenId }, { id: givenId }]
-        })
+        // Cast to ObjectId, only if givenId can result in a valid ObjectId
+        const query = isValidObjectId(givenId) ? { $or: [{ _id: givenId }, { id: givenId }] } : { id: givenId }
+        const match = await Mentor.findOne(query)
         if (!match) {
             return res.status(401).send("Mentor with such an id doesn't exist.")
         }
