@@ -36,7 +36,8 @@ async function verifyEmail(req, res, next) {
 
         // After that JWT token should be created and sent back (Separate function is needed for this)
         const accessToken = createJWT(
-            storedVerToken.image, storedVerToken.name, storedVerToken.email, storedVerToken.password, storedVerToken.position
+            storedVerToken.userId, storedVerToken.image, storedVerToken.name, 
+            storedVerToken.email, storedVerToken.password, storedVerToken.position
         )
 
         return res.status(200).json({accessToken})

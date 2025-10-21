@@ -55,7 +55,9 @@ async function getAllMentors(req, res, next) {
 async function getMentorById(req, res, next) {
     try {
         const givenId = req.params.id
-        const match = await Mentor.findById(givenId)
+        const match = await Mentor.findOne({
+            $or: [{ _id: givenId }, { id: givenId }]
+        })
         if (!match) {
             return res.status(401).send("Mentor with such an id doesn't exist.")
         }

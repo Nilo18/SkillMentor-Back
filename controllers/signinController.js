@@ -17,7 +17,8 @@ async function signinUser(req, res, next) {
         }
 
         const accessToken = createJWT(
-            suggestedUser.image, suggestedUser.name, suggestedUser.email, suggestedUser.password, suggestedUser.position
+            suggestedUser.id, suggestedUser.image, suggestedUser.name, 
+            suggestedUser.email, suggestedUser.password, suggestedUser.position
         )
         return res.status(200).json(accessToken)
     } catch (err) {
