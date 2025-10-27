@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const Mentor = require('../models/mentor.model.js')
 const baseURL = 'https://seefuture-back-a044db68f5d8.herokuapp.com'
 
@@ -55,7 +56,9 @@ async function getAllMentors(req, res, next) {
 async function getMentorById(req, res, next) {
     try {
         const givenId = req.params.id
-        const match = await Mentor.findById(givenId)
+        // Cast to ObjectId, only if givenId can result in a valid ObjectId
+        const query = isValidObjectId(givenId) ? { $or: [{ _id: givenId }, { id: givenId }] } : { id: givenId }
+        const match = await Mentor.findOne(query)
         if (!match) {
             return res.status(401).send("Mentor with such an id doesn't exist.")
         }
@@ -64,7 +67,8 @@ async function getMentorById(req, res, next) {
             id: match.id,
             // Access the static image, if we don't specify the route like this, the frontend won't be able to access the image
             // Unless we store it there as well and if we store it there as well, the purpose of the backend will be defeated.
-            image: getMentorImage(mentor.image), 
+            image: getMentorImage(match.image), 
+            email: match.email,
             name: match.name,
             position: match.position,
             charge: match.charge,

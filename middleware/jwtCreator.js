@@ -6,11 +6,11 @@ const jwt = require('jsonwebtoken')
 // email
 // password
 // position
-function createJWT(image, name, email, password, position) {
+function createJWT(id, image, name, email, password, position) {
     try {
         // const imageURL = `${process.env.BACKEND_URL}/mentors/${image}`
         // console.log(this.imageURL)
-        return jwt.sign({image, name, email, password, position}, process.env.JWT_SECRET)
+        return jwt.sign({id, image, name, email, password, position}, process.env.JWT_SECRET)
     } catch (err) {
         console.log('JWT creation failed: ', err)
     }
