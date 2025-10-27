@@ -26,7 +26,7 @@ async function getMentorsByAmount(req, res, next) {
 
         res.status(200).json({mentorsData})
     } catch (err) {
-        return res.status(500).send("Couldn't get mentors by amount.")
+        return res.status(500).send("Couldn't get mentors by amount: " + err)
     }
     // next() don't call next to prevent other controllers running alongside this one
 }
@@ -47,7 +47,7 @@ async function getAllMentors(req, res, next) {
         }));
         res.status(200).json(mentorsData)
     } catch (err) {
-        return res.status(500).send("Couldn't get all of the mentors: ", err)
+        return res.status(500).send("Couldn't get all of the mentors: " + err)
     }
     next()
 }
@@ -72,11 +72,27 @@ async function getMentorById(req, res, next) {
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).send("Couldn't get mentor by id: ", err)
+        return res.status(500).send("Couldn't get mentor by id: " + err)
     }
     next()
 }
 
-// async function updateMentor
+async function addExperience(req, res, next) {
+    try {
+        const { id, experience } = req.body
+        if (!id) {
+            return res.status(401).send("Plaese provide an id.")
+        }
 
-module.exports = {getMentorsByAmount, getAllMentors, getMentorById}
+        if (!experience) {
+            return res.status(401).send("Please provide a valid experience.");
+        }
+        const updatedExperiences = await Mentor.findByIdAndUpdate(id, {$push: {experiences: experience}}, {new: true})
+        res.status(200).json(updatedExperiences)
+    } catch (err) {
+        return res.status(500).send("Couldn't add the new experience" + err)
+    }
+    next()
+}
+
+module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience}

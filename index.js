@@ -8,6 +8,7 @@ require('dotenv').config() // Read .env values
 const mentorsRouter = require('./routes/mentorsRouter.js')
 const sliderRoute =  require('./routes/sliderRoute.js')
 const signupRouter = require('./routes/signupRouter.js')
+const signinRouter = require('./routes/signinRouter.js')
 const verRouter = require('./routes/verRouter.js')
 const pingRouter = require('./routes/pingRouter.js')
 
@@ -19,6 +20,7 @@ const pingRouter = require('./routes/pingRouter.js')
 app.use(cors({origin: 'http://localhost:4200'}))
 app.use(express.json())
 app.use('/signup', signupRouter)
+app.use('/signin', signinRouter)
 // Serve static assets folder on to access images and icons
 // Documents in the database should only have the image names because otherwise they would mess up the path, 
 // the path expects to serve the static assets folder on /mentors, /assets itself is not a route
