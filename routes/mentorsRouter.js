@@ -1,6 +1,7 @@
 const express = require('express')
 const mentorsRouter = express.Router()
-const { getMentorsByAmount, getAllMentors, getMentorById, addExperience } = require('../controllers/mentorsController.js')
+const { getMentorsByAmount, getAllMentors, 
+getMentorById, addExperience, removeExperience } = require('../controllers/mentorsController.js')
 const authenticate = require('../middleware/authenticate.js')
 // import upload from '../multerConfig.js';
 
@@ -13,6 +14,9 @@ mentorsRouter.patch('/experiences', authenticate, addExperience)
 
 // For getting every mentor
 mentorsRouter.get('/', getAllMentors)
+
+// For removing a mentor experience by id (mongoose id)
+mentorsRouter.delete('/:mentorId/experiences/:experienceId', removeExperience)
 
 // For getting by id
 mentorsRouter.get('/:id', getMentorById)

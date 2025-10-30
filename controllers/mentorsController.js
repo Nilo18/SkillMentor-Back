@@ -1,4 +1,4 @@
-const { isValidObjectId } = require('mongoose');
+const { isValidObjectId, Mongoose } = require('mongoose');
 const Mentor = require('../models/mentor.model.js')
 const baseURL = 'https://seefuture-back-a044db68f5d8.herokuapp.com'
 
@@ -76,7 +76,7 @@ async function getMentorById(req, res, next) {
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).send("Couldn't get mentor by id: " + err)
+        return res.status(500).send("Couldn't get mentor by id, " + err)
     }
     next()
 }
@@ -94,9 +94,27 @@ async function addExperience(req, res, next) {
         const updatedExperiences = await Mentor.findByIdAndUpdate(id, {$push: {experiences: experience}}, {new: true})
         res.status(200).json(updatedExperiences)
     } catch (err) {
-        return res.status(500).send("Couldn't add the new experience" + err)
+        return res.status(500).send("Couldn't add the new experience, " + err)
     }
     next()
 }
 
-module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience}
+async function removeExperience(req, res, next) {
+    try {
+        const { mentorId, experienceId } = req.params
+        // Use $pull to pull out (Delete an object) from the experiences array, which is a property on Mentor
+        // Can't use findByIdAndDelete because it only deletes an entire document, it can't update it's properties
+        const experienceToRemove = await Mentor.findByIdAndUpdate(
+            mentorId, {$pull: {experiences: {_id: experienceId}}}, {new: true}
+        )
+        if (!experienceToRemove) {
+            return res.status(404).send("Couldn't find the suggested experience")
+        }
+        res.status(200).json(experienceToRemove)
+    } catch (err) {
+        return res.status(500).send("Couldn't remove the experience, " + err)
+    }
+    next()
+}
+
+module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience, removeExperience}
