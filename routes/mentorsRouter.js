@@ -16,7 +16,7 @@ mentorsRouter.patch('/experiences', authenticate, addExperience)
 mentorsRouter.get('/', getAllMentors)
 
 // For removing a mentor experience by id (mongoose id)
-mentorsRouter.delete('/:mentorId/experiences/:experienceId', removeExperience)
+mentorsRouter.delete('/:mentorId/experiences/:experienceId', authenticate, removeExperience)
 
 // For getting by id
 mentorsRouter.get('/:id', getMentorById)
