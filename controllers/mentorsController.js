@@ -139,7 +139,7 @@ async function updateExperiences(req, res, next) {
             }           
         }
         await mentor.save()
-        res.status(200).send("Updated successfully.")
+        res.status(200).json({message: "Updated successfully."})
     } catch (error) {
         return res.status(500).send(`Couldn't update the experiences: ${error}`)
     }
