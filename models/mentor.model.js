@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const experienceSchema = mongoose.Schema({
+    isOnTop: {
+        type: Boolean,
+        required: true
+    },
+
     company: { 
         type: String,
         required: true
