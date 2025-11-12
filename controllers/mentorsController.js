@@ -117,4 +117,33 @@ async function removeExperience(req, res, next) {
     next()
 }
 
-module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience, removeExperience}
+async function updateExperiences(req, res, next) {
+    try {
+        const { mentorId, changes } = req.body
+        if (!changes) {
+            return res.status(401).send("Please provide the changes.")
+        }
+        const mentor = await Mentor.findById(mentorId)
+        for (let experience of changes) {
+            if (experience.action === 'update') {
+                // .id() is a mongoose subdocument method 
+                // It does the same thing as
+                // mentor.experiences.find(exp => exp._id.toString() === experienceId.toString());
+                const experienceToUpdate = mentor.experiences.id(experience._id)
+                if (!experienceToUpdate) return res.status(404).send("The suggested experience to update was not found.")
+                // Object.assign copies all enumerable values of the second parameter to the first parameter
+                // It is more effective than manually updating each field of the experience         
+                Object.assign(experienceToUpdate, experience.data)
+            } else if (experience.action === 'remove') {
+                mentor.experiences.id(experience._id)?.deleteOne()
+            }           
+        }
+        await mentor.save()
+        res.status(200).send("Updated successfully.")
+    } catch (error) {
+        return res.status(500).send(`Couldn't update the experiences: ${error}`)
+    }
+    next()
+}
+
+module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience, removeExperience, updateExperiences}
