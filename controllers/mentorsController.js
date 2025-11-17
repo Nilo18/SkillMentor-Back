@@ -146,4 +146,29 @@ async function updateExperiences(req, res, next) {
     next()
 }
 
-module.exports = {getMentorsByAmount, getAllMentors, getMentorById, addExperience, removeExperience, updateExperiences}
+async function updateProfileProperty(req, res, next) {
+    try {
+        const { mentorId, property, replacement } = req.body
+        const mentor = await Mentor.findById(mentorId);
+        if (!mentor) {
+            return res.status(404).send("Mentor not found.")
+        }
+
+        if (property in mentor) {
+            mentor[property] = replacement
+            await mentor.save()
+            res.status(200).json(mentor)
+        } else {
+            return res.status(404).send("The given property was not found on the mentor.")
+        }
+        
+    } catch (error) {
+        return res.status(500).send(`Couldn't update profile property: ${error}`)
+    }
+    next()
+}
+
+module.exports = {
+    getMentorsByAmount, getAllMentors, getMentorById, addExperience, 
+    removeExperience, updateExperiences, updateProfileProperty
+}
