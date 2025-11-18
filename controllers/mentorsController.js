@@ -1,5 +1,6 @@
 const { isValidObjectId, Mongoose } = require('mongoose');
 const Mentor = require('../models/mentor.model.js')
+const bcrypt = require('bcrypt')
 const baseURL = 'https://seefuture-back-a044db68f5d8.herokuapp.com'
 
 // This function will check if the image is being served statically or dynamically
@@ -154,6 +155,15 @@ async function updateProfileProperty(req, res, next) {
             return res.status(404).send("Mentor not found.")
         }
 
+         if (property in mentor && property === 'password')  {
+            const newHashedPassword = await bcrypt.hash(replacement, 10)
+            console.log('The newHashedPassword is: ' + newHashedPassword)
+            mentor[property] = newHashedPassword
+            console.log("mentor[property] is: " + mentor[property])
+            await mentor.save()
+            return res.status(200).json(mentor)
+        }
+
         if (property in mentor) {
             mentor[property] = replacement
             await mentor.save()
@@ -163,6 +173,7 @@ async function updateProfileProperty(req, res, next) {
         }
         
     } catch (error) {
+        console.log("Got an error: " + error)
         return res.status(500).send(`Couldn't update profile property: ${error}`)
     }
     next()
