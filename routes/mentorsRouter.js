@@ -6,6 +6,7 @@ const {
     updateProfileProperty 
 } = require('../controllers/mentorsController.js')
 const authenticate = require('../middleware/authenticate.js')
+const upload = require('../middleware/profImageHandler.js')
 // import upload from '../multerConfig.js';
 
 // For getting a specific amount of mentors
@@ -13,12 +14,12 @@ const authenticate = require('../middleware/authenticate.js')
 mentorsRouter.post('/amount', getMentorsByAmount)
 
 // Check if the request has the token with it
-mentorsRouter.patch('/experiences', authenticate, addExperience)
+mentorsRouter.patch('/experiences', addExperience)
 
 // For updating experiences
 mentorsRouter.put('/experiences', authenticate, updateExperiences)
 
-mentorsRouter.patch('/profile', authenticate, updateProfileProperty)
+mentorsRouter.patch('/profile', upload.single('image'), updateProfileProperty)
 
 // For getting every mentor
 mentorsRouter.get('/', getAllMentors)

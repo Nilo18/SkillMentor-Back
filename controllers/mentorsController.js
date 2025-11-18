@@ -92,8 +92,31 @@ async function addExperience(req, res, next) {
         if (!experience) {
             return res.status(401).send("Please provide a valid experience.");
         }
-        const updatedExperiences = await Mentor.findByIdAndUpdate(id, {$push: {experiences: experience}}, {new: true})
-        res.status(200).json(updatedExperiences)
+        // {$push: {experiences: experience}}, {new: true}
+        const mentor = await Mentor.findById(id)
+
+        if (!mentor) {
+            return res.status(404).send("Mentor not found.");
+        }
+
+        // Count how many experiences are on top
+        let topCounter = 0;
+        for (let experience of mentor.experiences) {
+            if (experience.isOnTop) {
+                topCounter++
+            }
+        }
+
+        // If there are 3 experiences on top already, don't allow more
+        if (topCounter === 3) {
+            console.log("Making the new experience's isOnTop false because there are already 3 top experience...")
+            experience.isOnTop = false
+            console.log(experience.isOnTop)
+        }
+
+        mentor.experiences.push(experience)
+        await mentor.save()
+        res.status(200).json(mentor.experiences)
     } catch (err) {
         return res.status(500).send("Couldn't add the new experience, " + err)
     }
@@ -150,20 +173,31 @@ async function updateExperiences(req, res, next) {
 async function updateProfileProperty(req, res, next) {
     try {
         const { mentorId, property, replacement } = req.body
+        const profileImage = req.file ? req.file.path : null
         const mentor = await Mentor.findById(mentorId);
         if (!mentor) {
             return res.status(404).send("Mentor not found.")
         }
 
-         if (property in mentor && property === 'password')  {
+        if (property in mentor && property === 'image' && profileImage) {
+            // The controller needs to handle updating the profile image in the database
+            mentor.image = profileImage
+            console.log(mentor.experiences)
+            await mentor.save()
+
+            return res.status(200).json({
+                success: true,
+                newImage: profileImage
+            })
+        }       
+        
+        if (property in mentor && property === 'password')  {
             const newHashedPassword = await bcrypt.hash(replacement, 10)
-            console.log('The newHashedPassword is: ' + newHashedPassword)
             mentor[property] = newHashedPassword
-            console.log("mentor[property] is: " + mentor[property])
             await mentor.save()
             return res.status(200).json(mentor)
         }
-
+    
         if (property in mentor) {
             mentor[property] = replacement
             await mentor.save()
