@@ -174,6 +174,7 @@ async function updateProfileProperty(req, res, next) {
     try {
         const { mentorId, property, replacement } = req.body
         const profileImage = req.file ? req.file.path : null
+        console.log(profileImage)
         const mentor = await Mentor.findById(mentorId);
         if (!mentor) {
             return res.status(404).send("Mentor not found.")
