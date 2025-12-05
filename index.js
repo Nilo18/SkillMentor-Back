@@ -17,7 +17,7 @@ const pingRouter = require('./routes/pingRouter.js')
 // console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '****' : 'missing');
 // console.log('BACKEND_URL', process.env.BACKEND_URL)
 
-app.use(cors({origin: 'http://localhost:4200'}))
+app.use(cors({origin: ['http://localhost:4200', 'https://skill-mentor-haad.vercel.app/']}))
 app.use(express.json())
 app.use('/signup', signupRouter)
 app.use('/signin', signinRouter)
