@@ -27,7 +27,10 @@ app.use('/signin', signinRouter)
 app.get('/', (req, res, next) => {
     res.status(200).send("Backend is running.")
 })
-app.use('/slider', express.static(path.join(__dirname, 'assets/slides'), {
+app.use('/slider', cors({origin: [
+        'http://localhost:4200', 'https://skill-mentor-haad.vercel.app'
+    ]
+}), express.static(path.join(__dirname, 'assets/slides'), {
     maxAge: '7d',
     immutable: true // Browser can safely cache forever if unchanged
 }))
